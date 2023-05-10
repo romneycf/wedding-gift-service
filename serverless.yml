@@ -3,7 +3,7 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs18.x
 
 functions:
   hello:
@@ -12,7 +12,13 @@ functions:
       - httpApi:
           path: /hello
           method: post
- 
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+
+    packager: 'yarn'
 plugins:
-  - serverless-plugin-typescript
+  - serverless-esbuild
   - serverless-offline
