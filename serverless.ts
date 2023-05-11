@@ -7,6 +7,9 @@ const serverlessConfiguration: AWS = {
     name: "aws",
     runtime: "nodejs16.x",
     stage: "${opt:stage, 'dev'}",
+    environment: {
+      STAGE: "${opt:stage, 'dev'}",
+    },
   },
   functions: {
     hello: {
@@ -16,6 +19,28 @@ const serverlessConfiguration: AWS = {
           http: {
             method: "post",
             path: "hello",
+          },
+        },
+      ],
+    },
+    createUser: {
+      handler: "src/create-user.handler",
+      events: [
+        {
+          http: {
+            method: "post",
+            path: "/users",
+          },
+        },
+      ],
+    },
+    getUsers: {
+      handler: "src/get-users.handler",
+      events: [
+        {
+          http: {
+            method: "get",
+            path: "/users",
           },
         },
       ],
@@ -31,6 +56,9 @@ const serverlessConfiguration: AWS = {
     localstack: {
       // Only use localstack for the local stage
       stages: ["local"],
+
+      host: "http://localhost",
+      edgePort: 4566,
 
       // Setup a docker volume for localstack to run code from to improve performance
       lambda: {
@@ -67,7 +95,7 @@ const serverlessConfiguration: AWS = {
   plugins: [
     "serverless-esbuild",
     "serverless-offline",
-    "serverless-localstack"
+    "serverless-localstack",
   ],
 };
 

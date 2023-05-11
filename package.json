@@ -9,7 +9,10 @@
     "prestart": "docker compose up -d",
     "sls": "serverless"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.329.0",
+    "@aws-sdk/util-dynamodb": "^3.329.0"
+  },
   "devDependencies": {
     "@serverless/typescript": "^3.30.1",
     "@types/aws-lambda": "^8.10.101",
