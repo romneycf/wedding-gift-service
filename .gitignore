@@ -2,5 +2,8 @@
 node_modules
 jspm_packages
 
+# esbuild
+.esbuild
+
 # Serverless directories
 .serverless
