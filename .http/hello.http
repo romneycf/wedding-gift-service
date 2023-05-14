@@ -1,5 +1,0 @@
-POST http://localhost:4566/restapis/a2hmfqzbnm/local/_user_request_/hello
-
-{
-    "id": 3
-}

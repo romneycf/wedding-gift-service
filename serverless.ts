@@ -7,22 +7,9 @@ const serverlessConfiguration: AWS = {
     name: "aws",
     runtime: "nodejs16.x",
     stage: "${opt:stage, 'dev'}",
-    environment: {
-      STAGE: "${opt:stage, 'dev'}",
-    },
+    environment: "${self:custom.environment.${self:provider.stage}}" as any,
   },
   functions: {
-    hello: {
-      handler: "src/handler.hello",
-      events: [
-        {
-          http: {
-            method: "post",
-            path: "hello",
-          },
-        },
-      ],
-    },
     createUser: {
       handler: "src/create-user.handler",
       events: [
@@ -47,6 +34,17 @@ const serverlessConfiguration: AWS = {
     },
   },
   custom: {
+    environment: {
+      local: {
+        STAGE: "local"
+      },
+      dev: {
+        STAGE: "dev"
+      },
+      prod: {
+        STAGE: "prod"
+      }
+    },
     tableName: "Users-${self:provider.stage}",
     esbuild: {
       bundle: true,

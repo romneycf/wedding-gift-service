@@ -9,9 +9,13 @@ import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
+  let endpoint: string | undefined;
+  if (process.env.STAGE == 'local') {
+    endpoint = `http://${process.env.LOCALSTACK_HOSTNAME}:4566`;
+  }
   const client = new DynamoDBClient({
     region: "us-east-1",
-    endpoint: `http://${process.env.LOCALSTACK_HOSTNAME}:4566`,
+    endpoint: endpoint,
   });
 
   const params = new ScanCommand({

@@ -1,0 +1,7 @@
+POST http://localhost:4566/restapis/q9xryvb9ar/local/_user_request_/users
+
+{
+    "name": "Jonh Doe",
+    "email": "jonh@doe",
+    "password": "123456"
+}

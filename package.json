@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "scripts": {
     "start": "yarn sls deploy --stage local && yarn watch",
-    "start:offline": "yarn sls offline --stage local",
+    "start:dev": "yarn sls offline --stage dev profile dev",
     "watch": "nodemon -w src -e '.*' -x 'yarn sls package --stage local'",
     "prestart": "docker compose up -d",
-    "sls": "serverless"
+    "sls": "serverless",
+    "deploy:dev": "yarn sls deploy --stage dev profile dev"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.329.0",

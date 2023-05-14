@@ -1,40 +1,21 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { marshall } from "@aws-sdk/util-dynamodb";
+import { UserRepository } from "./adapters/secondary/repositories/user-repository";
+import { User } from "./entities/user";
+import { ResponseBuilder } from "./helpers/response-builder";
 
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
+  //CONSTRUINDO OBJETO DE REQUISICAO (DESTRUCT) 
   const { name, email, password } = JSON.parse(event.body || "");
-
-  const client = new DynamoDBClient({
-    region: "us-east-1",
-    endpoint: `http://${process.env.LOCALSTACK_HOSTNAME}:4566`,
-  });
-
-  const user = {
-    PK: `USER#${email}`,
-    name,
-    email,
-    password,
-  };
-
-  const params = new PutItemCommand({
-    TableName: `Users-${process.env.STAGE}`,
-    Item: marshall(user),
-  });
+  const user = new User(name, email, password);
+  //TODO: VALIDAR OBJETO DE REQUISICAO
 
   try {
-    await client.send(params);
+    await new UserRepository().create(user);
   } catch (e) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify(e),
-    };
+    return ResponseBuilder.response(500, e);
   }
-
-  return {
-    statusCode: 201,
-    body: JSON.stringify(user),
-  };
+  console.log("Usuario Criado com sucesso")
+  return ResponseBuilder.response(201, user);
 };
