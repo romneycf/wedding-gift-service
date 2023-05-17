@@ -32,6 +32,17 @@ const serverlessConfiguration: AWS = {
         },
       ],
     },
+    deleteUser: {
+      handler: "src/delete-user.handler",
+      events: [
+        {
+          http: {
+            method: "delete",
+            path: "/users",
+          },
+        },
+      ],
+    },
   },
   custom: {
     environment: {

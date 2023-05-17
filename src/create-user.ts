@@ -6,11 +6,12 @@ import { ResponseBuilder } from "./helpers/response-builder";
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  //CONSTRUINDO OBJETO DE REQUISICAO (DESTRUCT) 
-  const { name, email, password } = JSON.parse(event.body || "");
+  const body = JSON.parse(event.body || "");
+  if (!body.name || !body.email || !body.password) {
+    return ResponseBuilder.response(400, 'Dados invalidos');
+  }
+  const { name, email, password } = body;
   const user = new User(name, email, password);
-  //TODO: VALIDAR OBJETO DE REQUISICAO
-
   try {
     await new UserRepository().create(user);
   } catch (e) {
