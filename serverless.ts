@@ -43,6 +43,17 @@ const serverlessConfiguration: AWS = {
         },
       ],
     },
+    login: {
+      handler: "src/adapters/primary/auth/login.handler",
+      events: [
+        {
+          http: {
+            method: "post",
+            path: "/auth/login",
+          },
+        },
+      ],
+    },
   },
   custom: {
     environment: {

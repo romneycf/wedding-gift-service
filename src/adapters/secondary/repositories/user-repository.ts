@@ -53,4 +53,22 @@ export class UserRepository {
       throw e
     }
   }
+
+  async getUser(email: string, password: string): Promise<ScanCommandOutput> {
+    const params = new ScanCommand({
+      TableName: this.tableName,
+      FilterExpression: "email= :email and password= :password",
+      ExpressionAttributeValues: {
+        ":email": { "S": email },
+        ":password": { "S": password }
+      }
+    });
+
+    try {
+      return await dynamodbClient.send(params);
+    } catch (e) {
+      console.error('UserRepository getUser()')
+      throw e
+    }
+  }
 }
