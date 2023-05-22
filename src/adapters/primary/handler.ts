@@ -5,14 +5,9 @@ export class Bodybuilder {
         if (typeof event !== 'object') {
             throw new Error("Formato inválido");
         }
-        try {
-            if (event.body) {
-                return JSON.parse(event.body);
-            }
-            return event
+        if (event.headers) {
+            return JSON.parse(event.body || '');
         }
-        catch (e) {
-            console.log(e)
-        }
+        return event;
     }
 }

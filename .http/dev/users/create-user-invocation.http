@@ -3,5 +3,5 @@ POST http://localhost:3002/2015-03-31/functions/wedding-gift-service-dev-createU
 {
     "name": "Jonh Doe",
     "email": "jonh@doe",
-
+    "password": "123456"
 }
