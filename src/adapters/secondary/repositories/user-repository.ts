@@ -24,7 +24,7 @@ export class UserRepository {
     }
 
   }
-
+  //TODO: Trocar retorno para lista de usuários
   async scan(): Promise<ScanCommandOutput> {
     const params = new ScanCommand({
       TableName: this.tableName
@@ -37,7 +37,7 @@ export class UserRepository {
       throw e
     }
   }
-
+  //TODO: Trocar retorno promise<void>
   async delete(key: string): Promise<DeleteItemCommandOutput> {
     const params = new DeleteItemCommand({
       TableName: this.tableName,
@@ -53,8 +53,9 @@ export class UserRepository {
       throw e
     }
   }
-
+  //TODO: Trocar retorno promise<void>
   async getUser(email: string, password: string): Promise<ScanCommandOutput> {
+    //TODO: Trocar para getitemComand
     const params = new ScanCommand({
       TableName: this.tableName,
       FilterExpression: "email= :email and password= :password",

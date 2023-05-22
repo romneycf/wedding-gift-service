@@ -1,0 +1,7 @@
+POST http://localhost:3002/2015-03-31/functions/wedding-gift-service-dev-createUser/invocations 
+
+{
+    "name": "Jonh Doe",
+    "email": "jonh@doe",
+
+}
