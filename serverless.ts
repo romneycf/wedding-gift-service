@@ -21,6 +21,17 @@ const serverlessConfiguration: AWS = {
         },
       ],
     },
+    createUser2: {
+      handler: "src/adapters/primary/user/create/handler.handler",
+      events: [
+        {
+          http: {
+            method: "post",
+            path: "/users2",
+          },
+        },
+      ],
+    },
     getUsers: {
       handler: "src/get-users.handler",
       events: [
