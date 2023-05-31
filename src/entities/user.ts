@@ -9,13 +9,17 @@ export class User {
         this.name = name;
         this.email = email;
         this.password = password;
+        const isvalid = this.validate(this);
+        if(!isvalid) {
+            throw new Error ('Usuário inválido');
+        }
     }
 
-    //CRIAR METODOS DA CLASS USER QUE SAO RESPONSAVEIS POR CRIAR/ALTERAR, BUSCAR E DELETAR UM USUARIO
-    //ESSES METODOS VAO ESPERAR COMO PARAMETROS 2 TROÇOS (INTERFACES??)(ADAPTAR A CHEGADA DO DADO E SAIDA)
-
-    public static validateUser(newUser: User) {
+    private validate(user: User):boolean {
         //AQUI EU POSSO VALIDAR SE CADA CAMPO ESTA CORRETO E SUAS RESPECTIVAS MASCARAS TALZ
-        return newUser;
+        if(user.password.length < 6){
+            return false
+        }
+        return true;
     }
 }

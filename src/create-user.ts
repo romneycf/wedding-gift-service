@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { UserRepository } from "./adapters/secondary/repositories/user-repository";
+import { UserDynamoDBRepository } from "./adapters/secondary/repositories/user-repository";
 import { User } from "./entities/user";
 import { ResponseBuilder } from "./helpers/response-builder";
 import { Validator } from "./helpers/validator";
@@ -23,7 +23,7 @@ export const handler = async (
     const { name, email, password } = body;
     const user = new User(name, email, password);
     try {
-      await new UserRepository().create(user);
+      await new UserDynamoDBRepository().create(user);
     } catch (e) {
       return ResponseBuilder.response(500, e);
     }
