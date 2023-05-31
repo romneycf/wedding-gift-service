@@ -2,8 +2,9 @@ import { DeleteItemCommand, DeleteItemCommandOutput, PutItemCommand, ScanCommand
 import { marshall } from "@aws-sdk/util-dynamodb";
 import { dynamodbClient } from "../../../client";
 import { User } from "../../../entities/user";
+import UserRepository from "../../../usecases/gateway/user-repository";
 
-export class UserDynamoDBRepository {
+export class UserDynamoDBRepository implements UserRepository {
   tableName: string = `Users-${process.env.STAGE}`
 
   async create(user: User): Promise<void> {
@@ -38,16 +39,18 @@ export class UserDynamoDBRepository {
     }
   }
   //TODO: Trocar retorno promise<void>
-  async delete(key: string): Promise<DeleteItemCommandOutput> {
+  async delete(key: string): Promise<any> {//?????
     const params = new DeleteItemCommand({
       TableName: this.tableName,
       Key: marshall({
         "PK": key
       }),
+      ReturnValues: "ALL_OLD"
     });
-
     try {
-      return await dynamodbClient.send(params);
+      const response = await dynamodbClient.send(params);
+      console.log(response);
+      return response.Attributes ? "Usuario deletado" : "Usuario inexistente"
     } catch (e) {
       console.error('UserRepository delete()')
       throw e

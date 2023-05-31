@@ -11,23 +11,12 @@ const serverlessConfiguration: AWS = {
   },
   functions: {
     createUser: {
-      handler: "src/create-user.handler",
-      events: [
-        {
-          http: {
-            method: "post",
-            path: "/users",
-          },
-        },
-      ],
-    },
-    createUser2: {
       handler: "src/adapters/primary/user/create/handler.handler",
       events: [
         {
           http: {
             method: "post",
-            path: "/users2",
+            path: "/users",
           },
         },
       ],
@@ -44,7 +33,7 @@ const serverlessConfiguration: AWS = {
       ],
     },
     deleteUser: {
-      handler: "src/delete-user.handler",
+      handler: "src/adapters/primary/user/delete/handler.handler",
       events: [
         {
           http: {
