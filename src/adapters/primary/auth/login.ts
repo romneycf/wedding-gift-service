@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { ResponseBuilder } from "../../../helpers/response-builder";
-import { UserRepository } from "../../secondary/repositories/user-repository";
+import { UserDynamoDBRepository } from "../../secondary/repositories/user-repository";
 
 export const handler = async (
   event: APIGatewayProxyEvent
@@ -11,7 +11,7 @@ export const handler = async (
   }
   const { email, password } = body;
   try {
-    const response = await new UserRepository().getUser(email, password);
+    const response = await new UserDynamoDBRepository().getUser(email, password);
     //const users = response.Items?.map((item) => unmarshall(item));
     return ResponseBuilder.response(200, response);
   } catch (e) {

@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { UserRepository } from "./adapters/secondary/repositories/user-repository";
+import { UserDynamoDBRepository } from "./adapters/secondary/repositories/user-repository";
 import { ResponseBuilder } from "./helpers/response-builder";
 
 export const handler = async (
@@ -7,7 +7,7 @@ export const handler = async (
 ): Promise<APIGatewayProxyResult> => {
   const { PK } = JSON.parse(event.body || "");
   try {
-    await new UserRepository().delete(PK);
+    await new UserDynamoDBRepository().delete(PK);
   } catch (e) {
     return ResponseBuilder.response(500, e);
   }
