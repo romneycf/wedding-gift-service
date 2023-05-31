@@ -1,5 +1,5 @@
-import { DeleteItemCommand, DeleteItemCommandOutput, PutItemCommand, ScanCommand, ScanCommandOutput } from "@aws-sdk/client-dynamodb";
-import { marshall } from "@aws-sdk/util-dynamodb";
+import { ContinuousBackupsUnavailableException, DeleteItemCommand, DeleteItemCommandOutput, PutItemCommand, ScanCommand, ScanCommandOutput } from "@aws-sdk/client-dynamodb";
+import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { dynamodbClient } from "../../../client";
 import { User } from "../../../entities/user";
 import UserRepository from "../../../usecases/gateway/user-repository";
@@ -26,20 +26,22 @@ export class UserDynamoDBRepository implements UserRepository {
 
   }
   //TODO: Trocar retorno para lista de usuários
-  async scan(): Promise<ScanCommandOutput> {
+  async list(): Promise<any> {//TODO  
     const params = new ScanCommand({
       TableName: this.tableName
     });
 
     try {
-      return await dynamodbClient.send(params);
+      const response = await dynamodbClient.send(params);
+      const users = response.Items?.map((item) => unmarshall(item));
+      return users;
     } catch (e) {
       console.error('UserRepository scan()')
       throw e
     }
   }
   //TODO: Trocar retorno promise<void>
-  async delete(key: string): Promise<any> {//?????
+  async delete(key: string): Promise<any> {//TODO:
     const params = new DeleteItemCommand({
       TableName: this.tableName,
       Key: marshall({
@@ -49,7 +51,6 @@ export class UserDynamoDBRepository implements UserRepository {
     });
     try {
       const response = await dynamodbClient.send(params);
-      console.log(response);
       return response.Attributes ? "Usuario deletado" : "Usuario inexistente"
     } catch (e) {
       console.error('UserRepository delete()')

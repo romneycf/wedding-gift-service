@@ -21,8 +21,8 @@ const serverlessConfiguration: AWS = {
         },
       ],
     },
-    getUsers: {
-      handler: "src/get-users.handler",
+    listUsers: {
+      handler: "src/adapters/primary/user/list/handler.handler",
       events: [
         {
           http: {

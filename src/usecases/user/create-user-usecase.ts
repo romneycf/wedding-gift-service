@@ -10,6 +10,7 @@ export async function createUserUseCase(
   }: CreateUserUseCaseRequest,
   repository: UserRepository
 ): Promise<User> {
+  //QUANDO PASSO SENHA MENOR QUE 6 DIGITOS TA ESTOURANDO ERRO AQUI E NAO TEM CATCH, FARIA AQUI MSM ?
   const user = new User(name, email, password);
   await repository.create(user);
   return user;
