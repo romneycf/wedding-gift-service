@@ -3,7 +3,7 @@ import { marshall } from "@aws-sdk/util-dynamodb";
 import { dynamodbClient } from "../../../client";
 import { User } from "../../../entities/user";
 
-export class UserRepository {
+export class UserDynamoDBRepository {
   tableName: string = `Users-${process.env.STAGE}`
 
   async create(user: User): Promise<void> {
