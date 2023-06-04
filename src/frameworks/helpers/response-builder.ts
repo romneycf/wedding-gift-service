@@ -1,10 +1,8 @@
+import { DomainException } from "@domains/exceptions/domain-exception";
 import { APIGatewayProxyResult } from "aws-lambda";
 
 export class ResponseBuilder {
-  public static build(
-    statusCode: number,
-    body?: any
-  ): APIGatewayProxyResult {
+  public static build(statusCode: number, body?: any): APIGatewayProxyResult {
     let response: any = {
       statusCode,
       headers: {
@@ -16,5 +14,12 @@ export class ResponseBuilder {
     }
 
     return response;
+  }
+
+  public static buildDomainException(exception: DomainException) {
+    return this.build(exception.statusCode, {
+      exception: exception.name,
+      message: exception.message,
+    });
   }
 }
