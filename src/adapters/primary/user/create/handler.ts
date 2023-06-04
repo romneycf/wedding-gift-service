@@ -1,23 +1,24 @@
-import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { ResponseBuilder } from "../../../../helpers/response-builder";
-import { createUserUseCase } from "../../../../usecases/user/create-user-usecase";
-import { UserDynamoDBRepository } from "../../../secondary/repositories/user-repository";
-import { Bodybuilder } from "../../../../helpers/body-builder";
-import { validateRequest } from "./requestValidation";
-import { isCreateUserUseCaseRequestType } from "./requestTypeAssertion";
+import type { APIGatewayProxyEvent } from "aws-lambda";
 
-export const handler = async (
-    event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
-    try {
-        const body = new Bodybuilder().build(event, isCreateUserUseCaseRequestType);
-        if (!validateRequest(body)) {//validaçoes de integridade
-            return ResponseBuilder.response(400, 'Inválid Request');
-        }
-        const repository = new UserDynamoDBRepository();
-        const response = await createUserUseCase(body, repository);
-        return ResponseBuilder.response(200, response);
-    } catch (e) {
-        return ResponseBuilder.response(500, "Unknown error");
-    }
+import { UserDynamoDBRepository } from "@adapters/secondary/repositories/user-repository";
+import { createUserUseCase } from "@domains/usecases/user/create-user-usecase";
+import { BodyBuilder } from "@frameworks/helpers/body-builder";
+import { lambdaErrorBoundary } from "@frameworks/helpers/lambda-error-boundary";
+import { ResponseBuilder } from "@frameworks/helpers/response-builder";
+import { isCreateUserUseCaseRequestType } from "./requestTypeAssertion";
+import { assertRequestIsValid } from "./requestValidation";
+
+const repository = new UserDynamoDBRepository();
+
+const main = async (event: APIGatewayProxyEvent) => {
+  const body = new BodyBuilder().build(event, isCreateUserUseCaseRequestType);
+  
+  const error = assertRequestIsValid(body);
+
+  if (error) return ResponseBuilder.buildDomainException(error);
+
+  const response = await createUserUseCase(body, repository);
+  return ResponseBuilder.build(200, response);
 };
+
+export const handler = lambdaErrorBoundary(main);

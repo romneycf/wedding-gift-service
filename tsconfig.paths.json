@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@tests/*": ["__tests__/*"],
+      "@adapters/*": ["src/adapters/*"],
+      "@domains/*": ["src/domains/*"],
+      "@frameworks/*": ["src/frameworks/*"]
+    }
+  }
+}

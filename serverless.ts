@@ -1,5 +1,5 @@
 import type { AWS } from "@serverless/typescript";
-
+// TODO: Testar domain e Helpers
 const serverlessConfiguration: AWS = {
   service: "wedding-gift-service",
   frameworkVersion: "3",

@@ -9,3 +9,4 @@ jspm_packages
 .serverless
 
 volume
+coverage
