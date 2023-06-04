@@ -1,4 +1,3 @@
-import { User } from "../../entities/user";
 import UserRepository from "../gateway/user-repository";
 
 export async function listUserUseCase(

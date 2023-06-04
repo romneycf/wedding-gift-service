@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "yarn sls deploy --stage local && yarn watch",
-    "start:dev": "yarn sls offline --stage dev profile dev",
+    "start:dev": "AWS_PROFILE=dev yarn sls offline --stage dev --reloadHandler",
     "watch": "nodemon -w src -e '.*' -x 'yarn sls package --stage local'",
     "prestart": "docker compose up -d",
     "sls": "serverless",
@@ -24,6 +24,7 @@
     "serverless-localstack": "^1.1.0",
     "serverless-offline": "^9.1.6",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^4.7.4"
   }
 }

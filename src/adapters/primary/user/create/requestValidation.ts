@@ -1,7 +1,7 @@
 import { CreateUserUseCaseRequest } from "../../../../usecases/user/create-user-usecase";
 
-// TODO: adicionar mais validações do objeto request
-export function validateRequest(request: CreateUserUseCaseRequest): boolean {
+// TODO: adicionar mais validaï¿½ï¿½es do objeto request
+export function isValidRequest(request: CreateUserUseCaseRequest): boolean {
     if (!request.email.includes('@')) {
         return false;
     }

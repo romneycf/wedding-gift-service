@@ -3,6 +3,6 @@ import { User } from "../../entities/user";
 
 export default interface UserRepository {
     create(user: User): Promise<void>;
-    list(): Promise<any>;//TODO
+    list(): Promise<User[]>;
     delete(PK: string): Promise<void>;
 }
