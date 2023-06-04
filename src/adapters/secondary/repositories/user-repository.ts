@@ -1,16 +1,14 @@
 import {
-  ContinuousBackupsUnavailableException,
   DeleteItemCommand,
-  DeleteItemCommandOutput,
   PutItemCommand,
   ScanCommand,
-  ScanCommandOutput,
+  ScanCommandOutput
 } from "@aws-sdk/client-dynamodb";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
-import { dynamodbClient } from "../../../frameworks/aws/clients/dynamodb-client";
 import { User } from "../../../domains/entities/user";
 import UserRepository from "../../../domains/usecases/gateway/user-repository";
+import { dynamodbClient } from "../../../frameworks/aws/clients/dynamodb-client";
 
 export class UserDynamoDBRepository implements UserRepository {
   tableName: string = `Users-${process.env.STAGE}`;
@@ -33,15 +31,19 @@ export class UserDynamoDBRepository implements UserRepository {
     }
   }
   //TODO: Trocar retorno para lista de usu�rios
-  async list(): Promise<any> {
-    //TODO
+  async list(): Promise<User[]> {
     const params = new ScanCommand({
       TableName: this.tableName,
     });
 
     try {
       const response = await dynamodbClient.send(params);
-      const users = response.Items?.map((item) => unmarshall(item));
+      const userRecords = response.Items?.map((item) => unmarshall(item)) || [];
+
+      const users = userRecords.map((user) => {
+        return new User(user.name, user.email, user.password);
+      });
+
       return users;
     } catch (e) {
       console.error("UserRepository scan()");
@@ -49,7 +51,7 @@ export class UserDynamoDBRepository implements UserRepository {
     }
   }
   //TODO: Trocar retorno promise<void>
-  async delete(key: string): Promise<any> {
+  async delete(key: string): Promise<User | undefined> {
     //TODO:
     const params = new DeleteItemCommand({
       TableName: this.tableName,
@@ -60,7 +62,11 @@ export class UserDynamoDBRepository implements UserRepository {
     });
     try {
       const response = await dynamodbClient.send(params);
-      return response.Attributes ? "Usuario deletado" : "Usuario inexistente";
+      if (response.Attributes === undefined) return undefined;
+
+      const record = unmarshall(response.Attributes);
+
+      return new User(record.name, record.email, record.password);
     } catch (e) {
       console.error("UserRepository delete()");
       throw e;

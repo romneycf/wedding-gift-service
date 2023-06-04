@@ -1,7 +1,6 @@
+import { User } from "@domains/entities/user";
 import UserRepository from "../gateway/user-repository";
 
-export async function listUserUseCase(
-  repository: UserRepository
-): Promise<any> {//TODO
-  return await repository.list();
+export function listUserUseCase(repository: UserRepository): Promise<User[]> {
+  return repository.list();
 }

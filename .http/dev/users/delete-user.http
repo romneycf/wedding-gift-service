@@ -1,5 +1,5 @@
 DELETE http://localhost:3000/dev/users
 
 {
-    "PK": "USER#jonh@doe"
+    "PK": "USER#carlos@email.com"
 }

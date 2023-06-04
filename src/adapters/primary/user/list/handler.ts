@@ -1,14 +1,12 @@
-import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import type { APIGatewayProxyResult } from "aws-lambda";
 
-import { UserDynamoDBRepository } from "../../../secondary/repositories/user-repository";
 import { listUserUseCase } from "../../../../domains/usecases/user/list-user-usecase";
 import { ResponseBuilder } from "../../../../frameworks/helpers/response-builder";
+import { UserDynamoDBRepository } from "../../../secondary/repositories/user-repository";
+const repository = new UserDynamoDBRepository();
 
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const handler = async (): Promise<APIGatewayProxyResult> => {
   try {
-    const repository = new UserDynamoDBRepository();
     const response = await listUserUseCase(repository);
     return ResponseBuilder.build(200, response);
   } catch (e) {
