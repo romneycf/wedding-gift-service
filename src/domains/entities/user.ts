@@ -11,7 +11,7 @@ export class User {
     this.password = password;
     const isvalid = this.validate(this);
     if (!isvalid) {
-      throw new Error("Usu�rio inv�lido"); //ESSE ERRO NAO ESTA VOLTANDO PARA O USECASE
+      throw new Error("Usuário inválido"); //ESSE ERRO NAO ESTA VOLTANDO PARA O USECASE
     }
   }
 
