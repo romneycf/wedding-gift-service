@@ -1,0 +1,6 @@
+POST http://localhost:3000/dev/auth/login
+
+{
+    "email": "jonh@doe",
+    "password": "123456"
+}
